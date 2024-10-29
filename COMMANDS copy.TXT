@@ -3,10 +3,10 @@
     python CryptoFrame.py hide trash/input.mp4 --output D:\www\ajdfhkjsdfbglksbdg\output.mkv --message "Privacy is a Fundamental Right" --codec FFV1 --public_key public_key.pem
 
 -text file
-    python CryptoFrame.py hide trash/input.mp4 --output outputt.mkv --message trash/message.txt --codec HFYU --public_key public_key.pem
+    python CryptoFrame.py hide trash/input.mp4 --output D:\www\ajdfhkjsdfbglksbdg\output.mkv --message trash/message.txt --codec HFYU --public_key public_key.pem
 
 -unhide
-    python CryptoFrame.py unhide outputt.mkv --private_key private_key.pem --passphrase "deer"
+    python CryptoFrame.py unhide D:\www\ajdfhkjsdfbglksbdg\output.mkv --private_key private_key.pem --passphrase "deer"
 
 
 
