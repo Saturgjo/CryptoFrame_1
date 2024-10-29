@@ -1,0 +1,42 @@
+
+-message 
+    python CryptoFrame.py hide trash/input.mp4 --output D:\www\ajdfhkjsdfbglksbdg\output.mkv --message "Privacy is a Fundamental Right" --codec FFV1 --public_key public_key.pem
+
+-text file
+    python CryptoFrame.py hide trash/input.mp4 --output outputt.mkv --message trash/message.txt --codec HFYU --public_key public_key.pem
+
+-unhide
+    python CryptoFrame.py unhide outputt.mkv --private_key private_key.pem --passphrase "deer"
+
+
+
+
+
+-generate keys
+    openssl genrsa -aes256 -passout pass:deer -out private_key.pem 2048
+
+    openssl rsa -in private_key.pem -passin pass:deer -pubout -out public_key.pem
+
+
+
+
+https://file-examples.com/storage/fe3ded775b671b723a15ab7/2017/11/file_example_WAV_5MG.wav
+https://file-examples.com/storage/fe3ded775b671b723a15ab7/2017/11/file_example_MP3_2MG.mp3
+https://file-examples.com/index.php/sample-audio-files/
+
+
+
+
+
+
+
+yee
+
+python CryptoFrameAudio.py hide trash/file_example_MP3_2MG.mp3 --output audio.wav --message trash/message.txt --codec HFYU --public_key public_key.pem
+
+python CryptoFrameAudio.py hide trash/file_example_WAV_5MG.wav --output audio2.wav --message trash/message.txt --codec HFYU --public_key public_key.pem
+
+
+python CryptoFrameAudio.py hide trash/file_example_MP3_2MG.mp3 --output audio3.wav --message "Privacy is a Fundamental Right" --public_key public_key.pem
+
+python CryptoFrameAudio.py hide trash/file_example_MP3_2MG.mp3 --output audio3.mp3 --message "Privacy is a Fundamental Right" --codec FFV1 --public_key public_key.pem
