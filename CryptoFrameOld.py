@@ -1,4 +1,4 @@
-#funkční ale příliš velké soubory 
+# funkční ale příliš velké soubory 
 
 
 # import cv2 # type: ignore
