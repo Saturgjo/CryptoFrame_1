@@ -91,7 +91,8 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
         metadata = {
             'user_name': user_name,
             'user_id': user_id,
-            'comment': f'Downloaded by {user_name} (ID: {user_id})'
+            'comment': f'Downloaded by {user_name} (ID: {user_id}) {user_created}' ,
+            'creation_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         add_metadata_video(input_file, metadata_output, metadata)
 
@@ -137,8 +138,9 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
 # Example usage
 if __name__ == "__main__":
     # Assuming this is run when a user downloads a video or audio
-    input_video_file = "trash\inport_example_MP3_2MG.mp3"
-    # input_video_file = "trash\inputt.mp4"
+    # input_video_file = "trash\inport_example_MP3_2MG.mp3"
+    input_video_file = "trash\inputt.mp4"
+    user_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     user_name = 'PTred'
     user_id = '69'
     secret_txt_file = r"trash\message.txt"  # Text file to embed
