@@ -1,4 +1,6 @@
 #working extractions
+# mp3 soubory zvládá 
+# mp4 ani ne 
 
 import os
 import subprocess
@@ -56,6 +58,6 @@ if __name__ == "__main__":
     # Assuming this is run when a user wants to extract metadata and hidden message from the video
     # input_video_file = 'D:\www\koš\personalized_output.mp4'
     # input_video_file = "D:\www\output.mp3"
-    input_video_file = r"D:\www\extracted\tmp41kowlzt.wav"
+    input_video_file = r"D:\www\extracted\Downloaded_20241101_085356.wav"
     password = 'nqm159kkk'
     automate_extraction(input_video_file, password)
