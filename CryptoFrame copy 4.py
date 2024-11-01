@@ -95,35 +95,39 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
         }
         add_metadata_video(input_file, metadata_output, metadata)
 
-        # Step 2: Convert to WAV for Steghide compatibility
-        current_time = datetime.now().strftime('%Y%m%d_%H%M%S')
-        wav_output = os.path.join(os.path.dirname(input_file), f'Downloaded_{current_time}.wav')
-        convert_to_wav(metadata_output, wav_output)
-
-        # Step 3: Embed the secret text file into the WAV file
-        password = 'nqm159kkk'
-        hide_message_from_file(wav_output, secret_txt_file, password)
-
-        # Step 4: Move the final output file to the desired location
-        if not final_output_path:
-            final_output_path = os.path.join(os.path.dirname(input_file), 'output_with_metadata_hidden.wav')
-        else:
-            output_dir = os.path.dirname(final_output_path)
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
-                print(f'Created directory: {output_dir}')
-
-        try:
-            shutil.move(wav_output, final_output_path)
+        # Step 2: Determine if the file is audio or video
+        if input_file.lower().endswith(('.mp4', '.mkv', '.avi', '.mov')):
+            # Video file: move directly to the final output path
+            if not final_output_path:
+                final_output_path = os.path.join(os.path.dirname(input_file), f'Download_{datetime.now().strftime("%Y%m%d_%H%M%S")}.mkv')
+            else:
+                final_output_path = os.path.join(final_output_path, f'Download_{datetime.now().strftime("%Y%m%d_%H%M%S")}.mkv')
+            shutil.copy(metadata_output, final_output_path)
             print(f'File successfully moved to: {final_output_path}')
-        except IOError as e:
-            print(f'Failed to move the file to the specified output path. Error: {e}')
-            # As a fallback, try copying the file
+            print(f'File successfully moved to: {final_output_path}')
+        elif input_file.lower().endswith(('.mp3', '.wav', '.au')):
+            # Audio file: convert to WAV for Steghide compatibility
+            current_time = datetime.now().strftime('%Y%m%d_%H%M%S')
+            wav_output = os.path.join(os.path.dirname(input_file), f'Download_{current_time}.wav')
+            convert_to_wav(metadata_output, wav_output)
+
+            # Step 3: Embed the secret text file into the WAV file
+            password = 'nqm159kkk'
+            hide_message_from_file(wav_output, secret_txt_file, password)
+
+            # Step 4: Move the final output file to the desired location
+            final_output_path = final_output_path or os.path.join(os.path.dirname(input_file), 'output_with_metadata_hidden.wav')
             try:
-                shutil.copy(wav_output, final_output_path)
-                print(f'File successfully copied to: {final_output_path}')
+                shutil.move(wav_output, final_output_path)
+                print(f'File successfully moved to: {final_output_path}')
             except IOError as e:
-                print(f'Failed to copy the file to the specified output path. Error: {e}')
+                print(f'Failed to move the file to the specified output path. Error: {e}')
+                # As a fallback, try copying the file
+                try:
+                    shutil.copy(wav_output, final_output_path)
+                    print(f'File successfully copied to: {final_output_path}')
+                except IOError as e:
+                    print(f'Failed to copy the file to the specified output path. Error: {e}')
 
         print(f'Final file with metadata and hidden message is located at: {final_output_path}')
 
@@ -133,13 +137,11 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
 # Example usage
 if __name__ == "__main__":
     # Assuming this is run when a user downloads a video or audio
-    # input_video_file = "trash\inport_example_MP3_2MG.mp3"
-    # input_video_file = "trash\inport_example_MP3_2MG.mp3"
-    input_video_file = "trash\input.mp4"
+    input_video_file = "trash\inport_example_MP3_2MG.mp3"
     # input_video_file = "trash\inputt.mp4"
     user_name = 'PTred'
-    user_id = '014'
+    user_id = '69'
     secret_txt_file = r"trash\message.txt"  # Text file to embed
     final_output_path = input('Enter the final destination path for the output file (leave empty for default): ')
-    final_output_path = 'D:\www\extracted'
+    final_output_path = final_output_path or 'D:\www\extracted'
     automate_embedding(input_video_file, user_name, user_id, secret_txt_file, final_output_path)

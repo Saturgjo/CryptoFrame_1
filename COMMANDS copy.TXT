@@ -1,4 +1,12 @@
 
+
+python '.\CryptoFrame copy 3.py'
+
+
+
+
+
+
 -message 
     python CryptoFrame.py hide trash/input.mp4 --output D:\www\ajdfhkjsdfbglksbdg\output.mkv --message "Privacy is a Fundamental Right" --codec XVID --public_key public_key.pem
 
