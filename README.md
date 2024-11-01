@@ -1,99 +1,85 @@
-# CryptoFrame
+## Popis projektu
 
-## Description
+Tento projekt obsahuje dva hlavní programy:
 
-CryptoFrame is a command-line utility designed for highly secure video steganography. It enables users to embed hidden text messages into video files using multi-layered encryption techniques. The tool leverages seven layers of AES-256 encryption in CBC mode, further secured with RSA encryption, ensuring the confidentiality and integrity of the hidden data.
+- `CryptoFrame_copy4.py`
+- `CryptoFrame_copy3.py`
 
-Supported input video formats include AVI, MKV, MOV, MP4, OGG, WMV, and WEBM. The output is confined to lossless formats such as AVI, MOV, and MKV to prevent the corruption of steganographically hidden data.
+### Požadavky a instalace
 
-The tool offers two lossless codecs for output videos:
+Pro správný běh skriptů je nutné nainstalovat následující nástroje. Doporučuje se instalovat je na disk, který budete používat pro tento projekt.
 
-- **FFV1**: Provides a trade-off between file size and universal playback support, typically resulting in smaller file sizes.
-- **HFYU (Huffyuv)**: Generates larger files but guarantees broad compatibility with most media players.
+Nejprve nainstalujte [Chocolatey](https://chocolatey.org/install), pokud jej ještě nemáte. Poté spusťte následující příkazy v příkazovém řádku s administrátorskými právy:
 
-## Command Line Examples
-
-### Hiding a String Message:
-
-`python CryptoFrame.py hide input.mp4 --output output.mkv --message "Privacy is a Fundamental Right" --codec FFV1 --public_key public_key.pem`
-
-### Hiding a Message from a Text File:
-
-`python CryptoFrame.py hide input.mp4 --output output.mkv --message message.txt --codec HFYU --public_key public_key.pem`
-
-### Unhiding a Message:
-
-`python CryptoFrame.py unhide output.mkv --private_key private_key.pem --passphrase "YourPassphrase"`
-
-## Installation and Requirements
-
-Ensure Python 3.x is installed on your system.
-
-Clone the CryptoFrame repository to your local machine and install the requirements:
-
+```bash
+choco install ffmpeg
+choco install steghide
 ```
-git clone https://github.com/x011/CryptoFrame.git
-cd CryptoFrame
-pip install -r requirements.txt
-```
+Příklad kde jsem pracoval s projektem a kde se instalovali.
 
-## Installing OpenSSL
-
-Before generating RSA key pairs, ensure that you have OpenSSL installed on your system. Follow the instructions below based on your operating system:
+![image](https://github.com/user-attachments/assets/c7aa9e1d-9c6f-4fef-8b42-c2ec5e385c37)
 
 
-### Windows
+### CryptoFrame_copy4.py
 
-1. Download the latest OpenSSL installer from [this page](https://slproweb.com/products/Win32OpenSSL.html).
-2. Run the installer and follow the on-screen instructions to complete the installation.
+Tento program umožňuje přidávání metadat do audio záznamů pomocí steganografie. Pro správnou funkci je třeba upravit následující části v kódu:
 
+1. **Cíl přidání metadat**:
+   - Ve spodní části kódu upravte cestu k souboru, do kterého chcete přidat metadata.
 
-### macOS
+2. **Heslo**:
+   - Najděte řádek `password = ""` a nastavte silné heslo, aby nebylo možné data snadno ověřit třetími stranami. *(Toto nastavení platí pouze pro audio záznamy.)*
 
-OpenSSL should already be installed on macOS. However, if you need to install or upgrade, you can use [Homebrew](https://brew.sh/):
+3. **Umístění souboru `message.txt`**:
+   - Ve spodní části kódu můžete upravit cestu k souboru `message.txt` podle vašich potřeb.
 
-`brew install openssl`
+4. **Nastavení metadat**:
+   - Nastavte hodnoty metadat, jako jsou `user_name` a `user_id`.
+  
+5. **Cíl exportu metadat**:
+   - Ve spodní části kódu můžete upravit cestu kam soubor bude putovat nebo je možno v konzoli zadat vlastní cestu při vytváření
+   - "Buď ve chvíli kdy se konzile zeptá kam soubor pošlete napíšete vlastní nebo jen potvrdíte"
 
-
-### Linux (Ubuntu/Debian)
-
-```
-sudo apt-get update
-sudo apt-get install openssl
+**Spuštění programu:**
+```bash
+python .\CryptoFrame_copy4.py
 ```
 
-## Generating RSA Key Pair
+### CryptoFrame_copy3.py
 
-To generate a 4096-bit RSA key pair:
+Tento program slouží k ověřování videí a sledování jejich stažení. Pro správnou funkci je třeba upravit následující části v kódu:
 
-1. **Private Key:**
-    
-`openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:4096 -pass pass:YourPassPhraseHere`
-    
-2. **Public Key:**
-    
-`openssl rsa -pubout -in private_key.pem -out public_key.pem -passin pass:YourPassPhraseHere `
-   
-Be sure to choose a strong password and keep your private key secure.
+1. **Výběr videa**:
+   - Ve spodní části kódu určete, které video/audio chcete ověřit a zjistit, kdo jej stáhl.
 
-## Output File Size Note
+2. **Zobrazení metadat**:
+   - Metadata se zobrazí v konzoli.
 
-The use of lossless codecs for steganography results in larger output file sizes. While lossy compression (x264, x265, etc.) may reduce the size, it compromises the integrity of the steganographic data due to alterations in pixel values, making lossless codecs a necessary choice for CryptoFrame.
+3. **Export `message.txt`**:
+   - Soubor `message.txt` z audio záznamu se exportuje do složky s kódem.
+   - U video souboru se zobrazí metadata, ale může dojít k chybě („error“) týkající se nepřítomnosti souboru `message.txt`.
 
-## Understanding LSB (Least Significant Bit) Steganography
+**Spuštění programu:**
+```bash
+python .\CryptoFrame_copy3.py
+```
 
-LSB steganography is a digital hiding technique where the least significant bit—essentially the last bit in a byte of data—of a pixel's color value is altered to encode information. In videos, each frame is composed of a multitude of pixels, each pixel containing color data typically represented by three values (red, green, and blue). By tweaking the LSB of these values, CryptoFrame injects the message directly into the image in a way that is nearly undetectable.
+### Poznámky
 
-This technique takes advantage of the fact that small changes in the LSB of a pixel's color will not significantly alter the perceived color due to the binary weight it carries being minimal. This tiny difference is not perceivable by human vision, making the alteration an invisible carrier of secret information.
+- Ujistěte se, že máte nainstalované všechny potřebné závislosti pro běh skriptů.
+- Doporučuje se používat bezpečné heslo pro ochranu dat.
+- Při úpravě cest k souborům dbejte na správnou strukturu složek ve vašem projektu.
 
-The criticality of using lossless codecs for this method cannot be overstressed. Lossy codecs, which compress data and consequently discard some of it for the sake of reducing file size, can potentially distort or obliterate the steganographically embedded bits. Lossless codecs, on the other hand, preserve every bit of information, ensuring that the embedded messages are retained intact throughout the process of saving and viewing the video.
+Pokud máte jakékoliv otázky nebo potřebujete pomoc, neváhejte v repozitáři nebo kontaktovat autora projektu.
 
-CryptoFrame harnesses LSB steganography in combination with robust encryption to offer a formidable tool in secure and covert communication.
+## Příklad použití
 
-## Disclaimer
+1. **Přidání metadat do video/audio záznamu:**
+   ```bash
+   python .\CryptoFrame_copy4.py
+   ```
 
-This tool is for educational purposes only. The authors do not endorse or promote the use of this software for any illicit activities.
-
-## License
-
-MIT License - see LICENSE file for details.
+2. **Ověření videa/audia a sledování stažení:**
+   ```bash
+   python .\CryptoFrame_copy3.py
+   ```
