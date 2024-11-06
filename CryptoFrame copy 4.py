@@ -88,6 +88,8 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
     try:
         # Step 1: Add metadata to the input file
         metadata_output = tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(input_file)[-1]).name
+        if os.path.exists(metadata_output):
+            os.remove(metadata_output)        
         metadata = {
             'user_name': user_name,
             'user_id': user_id,
@@ -139,11 +141,11 @@ def automate_embedding(input_file, user_name, user_id, secret_txt_file, final_ou
 if __name__ == "__main__":
     # Assuming this is run when a user downloads a video or audio
     # input_video_file = "trash\inport_example_MP3_2MG.mp3"
-    input_video_file = "trash\inputt.mp4"
+    input_video_file = r"trash\inputt.mp4"
     user_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     user_name = 'PTred'
     user_id = '69'
     secret_txt_file = r"trash\message.txt"  # Text file to embed
-    final_output_path = input('Enter the final destination path for the output file (leave empty for default): ')
-    final_output_path = final_output_path or 'D:\www\extracted'
+    # final_output_path = input('Enter the final destination path for the output file (leave empty for default): ')
+    final_output_path = r'D:\www\extracted'
     automate_embedding(input_video_file, user_name, user_id, secret_txt_file, final_output_path)
